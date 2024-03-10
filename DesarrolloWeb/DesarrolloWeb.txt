@@ -1,0 +1,52 @@
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+@SpringBootApplication
+@RestController
+@RequestMapping("/api")
+public class FestiveDateValidatorApplication {
+
+    private Map<LocalDate, String> festiveDates = new HashMap<>();
+
+    public static void main(String[] args) {
+        SpringApplication.run(FestiveDateValidatorApplication.class, args);
+    }
+
+    public FestiveDateValidatorApplication() {
+        // Agregar fechas festivas de Colombia a la lista
+        festiveDates.put(LocalDate.of(2023, 1, 1), "Año Nuevo");
+        festiveDates.put(LocalDate.of(2023, 1, 6), "Día de los Reyes Magos");
+        festiveDates.put(LocalDate.of(2023, 3, 20), "Día de San José");
+        festiveDates.put(LocalDate.of(2023, 4, 1), "Domingo de Ramos");
+        festiveDates.put(LocalDate.of(2023, 4, 6), "Viernes Santo");
+        festiveDates.put(LocalDate.of(2023, 4, 17), "Día de la Independencia de Cartagena");
+        festiveDates.put(LocalDate.of(2023, 5, 1), "Día del Trabajo");
+        festiveDates.put(LocalDate.of(2023, 6, 5), "Ascensión del Señor");
+        festiveDates.put(LocalDate.of(2023, 6, 19), "Corpus Christi");
+        festiveDates.put(LocalDate.of(2023, 7, 2), "Sagrado Corazón de Jesús");
+        festiveDates.put(LocalDate.of(2023, 7, 20), "Día de la Independencia");
+        festiveDates.put(LocalDate.of(2023, 8, 7), "Batalla de Boyacá");
+        festiveDates.put(LocalDate.of(2023, 8, 21), "Día del Trabajador de la Industria");
+        festiveDates.put(LocalDate.of(2023, 10, 16), "Día de la Raza");
+        festiveDates.put(LocalDate.of(2023, 11, 6), "Día de Todos los Santos");
+        festiveDates.put(LocalDate.of(2023, 11, 13), "Independencia de Cartagena");
+        festiveDates.put(LocalDate.of(2023, 12, 8), "Día de la Inmaculada Concepción");
+        festiveDates.put(LocalDate.of(2023, 12, 25), "Navidad");
+        // Agregar más fechas festivas aquí...
+    }
+
+    @GetMapping("/validate")
+    public String validateFestiveDate(@RequestParam String date) {
+        LocalDate parsedDate = LocalDate.parse(date);
+        if (festiveDates.containsKey(parsedDate)) {
+            return "La fecha " + date + " es festiva: " + festiveDates.get(parsedDate);
+        } else {
+            return "La fecha " + date + " no es festiva en Colombia.";
+        }
+    }
+}
